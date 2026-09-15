@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
+import {
+  useNavigate,
+  useParams,
+} from 'react-router-dom'
 import {
   getProfile,
   updateProfile,
@@ -26,7 +33,7 @@ function ProfileDetailPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     setLoading(true)
     setError('')
 
@@ -47,11 +54,11 @@ function ProfileDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [iccid, navigate])
 
   useEffect(() => {
     loadProfile()
-  }, [iccid])
+  }, [loadProfile])
 
   const handleUpdate = async (event) => {
     event.preventDefault()

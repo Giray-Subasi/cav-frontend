@@ -1,4 +1,8 @@
-import { useEffect, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import {
   Link,
   useNavigate,
@@ -16,6 +20,14 @@ import {
   logout,
 } from '../services/auth'
 import '../App.css'
+
+const DEFAULT_QUERY = {
+  status: '',
+  operator: '',
+  sortBy: 'id',
+  direction: 'asc',
+  pageSize: 10,
+}
 
 function DashboardPage() {
   const [profiles, setProfiles] = useState([])
@@ -45,52 +57,68 @@ function DashboardPage() {
   const navigate = useNavigate()
   const user = getCurrentUser()
 
-  const loadProfiles = async (page = currentPage) => {
-    setLoading(true)
-    setError('')
+  const loadProfiles = useCallback(
+    async (
+      page = 0,
+      query = DEFAULT_QUERY
+    ) => {
+      setLoading(true)
+      setError('')
 
-    try {
-      const data = await getProfiles({
-        page,
-        size: pageSize,
-        status: statusFilter,
-        operator: operatorFilter,
-        sortBy,
-        direction,
-      })
+      try {
+        const data = await getProfiles({
+          page,
+          size: query.pageSize,
+          status: query.status,
+          operator: query.operator,
+          sortBy: query.sortBy,
+          direction: query.direction,
+        })
 
-      if (Array.isArray(data)) {
-        setProfiles(data)
-        setCurrentPage(0)
-        setTotalPages(1)
-        setTotalElements(data.length)
-      } else {
-        setProfiles(data.content || [])
-        setCurrentPage(data.page ?? page)
-        setTotalPages(data.totalPages ?? 1)
-        setTotalElements(
-          data.totalElements ?? data.content?.length ?? 0
-        )
+        if (Array.isArray(data)) {
+          setProfiles(data)
+          setCurrentPage(0)
+          setTotalPages(1)
+          setTotalElements(data.length)
+        } else {
+          setProfiles(data.content || [])
+          setCurrentPage(data.page ?? page)
+          setTotalPages(data.totalPages ?? 1)
+          setTotalElements(
+            data.totalElements ??
+              data.content?.length ??
+              0
+          )
+        }
+      } catch (error) {
+        if (error.status === 401) {
+          logout()
+          navigate('/login')
+          return
+        }
+
+        setError(error.message)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      if (error.status === 401) {
-        logout()
-        navigate('/login')
-        return
-      }
-
-      setError(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    [navigate]
+  )
 
   useEffect(() => {
-    loadProfiles(0)
-  }, [])
+    loadProfiles(0, DEFAULT_QUERY)
+  }, [loadProfiles])
+
+  const getCurrentQuery = () => ({
+    status: statusFilter,
+    operator: operatorFilter,
+    sortBy,
+    direction,
+    pageSize,
+  })
 
   const handleApplyFilters = () => {
-    loadProfiles(0)
+    loadProfiles(0, getCurrentQuery())
   }
 
   const handleResetFilters = () => {
@@ -100,9 +128,7 @@ function DashboardPage() {
     setDirection('asc')
     setPageSize(10)
 
-    setTimeout(() => {
-      window.location.reload()
-    }, 0)
+    loadProfiles(0, DEFAULT_QUERY)
   }
 
   const handleCreateProfile = async (event) => {
@@ -127,7 +153,10 @@ function DashboardPage() {
       setIccid('')
       setOperator('TURKCELL')
 
-      await loadProfiles(currentPage)
+      await loadProfiles(
+        currentPage,
+        getCurrentQuery()
+      )
     } catch (error) {
       setCreateError(error.message)
     } finally {
@@ -155,7 +184,10 @@ function DashboardPage() {
         await enableProfile(profile.iccid)
       }
 
-      await loadProfiles(currentPage)
+      await loadProfiles(
+        currentPage,
+        getCurrentQuery()
+      )
     } catch (error) {
       if (error.status === 401) {
         logout()
@@ -183,7 +215,11 @@ function DashboardPage() {
 
     try {
       await deleteProfile(profile.iccid)
-      await loadProfiles(currentPage)
+
+      await loadProfiles(
+        currentPage,
+        getCurrentQuery()
+      )
     } catch (error) {
       if (error.status === 401) {
         logout()
@@ -199,13 +235,19 @@ function DashboardPage() {
 
   const handlePreviousPage = () => {
     if (currentPage > 0) {
-      loadProfiles(currentPage - 1)
+      loadProfiles(
+        currentPage - 1,
+        getCurrentQuery()
+      )
     }
   }
 
   const handleNextPage = () => {
     if (currentPage + 1 < totalPages) {
-      loadProfiles(currentPage + 1)
+      loadProfiles(
+        currentPage + 1,
+        getCurrentQuery()
+      )
     }
   }
 
@@ -342,8 +384,12 @@ function DashboardPage() {
             >
               <option value="">All Statuses</option>
               <option value="CREATED">CREATED</option>
-              <option value="DOWNLOADING">DOWNLOADING</option>
-              <option value="DOWNLOADED">DOWNLOADED</option>
+              <option value="DOWNLOADING">
+                DOWNLOADING
+              </option>
+              <option value="DOWNLOADED">
+                DOWNLOADED
+              </option>
               <option value="ENABLED">ENABLED</option>
               <option value="FAILED">FAILED</option>
             </select>
@@ -404,7 +450,9 @@ function DashboardPage() {
             <select
               value={pageSize}
               onChange={(event) =>
-                setPageSize(Number(event.target.value))
+                setPageSize(
+                  Number(event.target.value)
+                )
               }
             >
               <option value={1}>1</option>
@@ -444,7 +492,12 @@ function DashboardPage() {
 
           <button
             className="refresh-button"
-            onClick={() => loadProfiles(currentPage)}
+            onClick={() =>
+              loadProfiles(
+                currentPage,
+                getCurrentQuery()
+              )
+            }
             disabled={loading}
           >
             Refresh
@@ -491,7 +544,8 @@ function DashboardPage() {
                 <tbody>
                   {profiles.map((profile) => {
                     const isWorking =
-                      workingProfile === profile.iccid
+                      workingProfile ===
+                      profile.iccid
 
                     return (
                       <tr key={profile.iccid}>
@@ -516,7 +570,8 @@ function DashboardPage() {
                         {user?.role === 'ADMIN' && (
                           <td>
                             <div className="action-buttons">
-                              {profile.status === 'CREATED' && (
+                              {profile.status ===
+                                'CREATED' && (
                                 <button
                                   className="action-button"
                                   disabled={isWorking}
@@ -531,7 +586,8 @@ function DashboardPage() {
                                 </button>
                               )}
 
-                              {profile.status === 'DOWNLOADING' && (
+                              {profile.status ===
+                                'DOWNLOADING' && (
                                 <button
                                   className="action-button"
                                   disabled={isWorking}
@@ -546,7 +602,8 @@ function DashboardPage() {
                                 </button>
                               )}
 
-                              {profile.status === 'DOWNLOADED' && (
+                              {profile.status ===
+                                'DOWNLOADED' && (
                                 <button
                                   className="action-button"
                                   disabled={isWorking}
@@ -596,7 +653,9 @@ function DashboardPage() {
               <button
                 className="secondary-button"
                 onClick={handleNextPage}
-                disabled={currentPage + 1 >= totalPages}
+                disabled={
+                  currentPage + 1 >= totalPages
+                }
               >
                 Next
               </button>
