@@ -1,16 +1,152 @@
-# React + Vite
+# C.A.V Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for the C.A.V eSIM Management System.
 
-Currently, two official plugins are available:
+The application provides a web interface for authentication, eSIM profile management, role-based operations, filtering, sorting, pagination, and profile lifecycle management.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Technology Stack
 
-## React Compiler
+- React
+- Vite
+- JavaScript
+- React Router
+- JWT
+- CSS
+- Nginx
+- Docker
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Login with JWT authentication
+- Protected routes
+- USER and ADMIN role support
+- Profile listing
+- Profile details
+- Filtering by status and operator
+- Sorting
+- Pagination
+- ADMIN profile creation
+- ADMIN profile editing
+- ADMIN profile deletion
+- eSIM lifecycle actions
+  - Start Download
+  - Complete Download
+  - Enable
+- Responsive interface
+- Docker production build with Nginx
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## User Roles
+
+### USER
+
+Users can:
+
+- Log in
+- View profiles
+- Filter and sort profiles
+- Use pagination
+- View profile details
+
+### ADMIN
+
+Administrators can additionally:
+
+- Create profiles
+- Edit profiles
+- Delete profiles
+- Manage profile lifecycle states
+
+## Local Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a `.env` file based on `.env.example`:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at:
+
+```text
+http://localhost:5173
+```
+
+## Production Build
+
+Create a production build with:
+
+```bash
+npm run build
+```
+
+The generated files are stored in:
+
+```text
+dist/
+```
+
+Test the production build locally:
+
+```bash
+npm run preview -- --port 5173
+```
+
+## Docker
+
+Build the frontend Docker image:
+
+```bash
+docker build --build-arg VITE_API_BASE_URL=http://localhost:8080 -t cav-frontend .
+```
+
+The production image uses Nginx to serve the React application.
+
+The complete frontend, backend, and PostgreSQL system can also be started through the Docker Compose configuration in the backend repository.
+
+## Backend
+
+The frontend communicates with the Spring Boot REST API using JWT Bearer authentication.
+
+Backend repository:
+
+```text
+https://github.com/Giray-Subasi/cav-backend
+```
+
+## Repository
+
+Frontend repository:
+
+```text
+https://github.com/Giray-Subasi/cav-frontend
+```
+
+## Security
+
+JWT tokens are stored in browser session storage.
+
+Sensitive backend configuration such as database passwords and JWT signing secrets is never stored in the frontend.
+
+`VITE_API_BASE_URL` is a public frontend configuration value and is provided through environment configuration.
+
+## Project Status
+
+Core frontend functionality is complete.
+
+Current focus:
+
+- Documentation
+- CI/CD
+- Deployment
+- Final project polish
