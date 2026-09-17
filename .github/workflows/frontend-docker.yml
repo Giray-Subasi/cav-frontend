@@ -50,6 +50,6 @@ jobs:
           context: .
           push: true
           build-args: |
-            VITE_API_BASE_URL=http://localhost:8080
+            VITE_API_BASE_URL=/api
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
