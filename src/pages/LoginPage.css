@@ -1,0 +1,585 @@
+
+.cav-login-page {
+  --cav-navy: #0b1730;
+  --cav-blue: #2563eb;
+  --cav-text: #14213d;
+
+  box-sizing: border-box;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 15% 15%, #e2edff, transparent 35%),
+    #edf2f9;
+  color: var(--cav-text);
+}
+
+.cav-login-page *,
+.cav-login-page *::before,
+.cav-login-page *::after {
+  box-sizing: border-box;
+}
+
+.cav-login-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  width: 100%;
+  max-width: 1120px;
+  min-height: 590px;
+  overflow: hidden;
+  border: 1px solid #e1e8f2;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 80px rgba(20, 40, 75, 0.11);
+}
+
+/* Product introduction */
+
+.cav-login-intro {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  overflow: hidden;
+  padding: 32px 38px;
+  background:
+    radial-gradient(
+      ellipse at 95% 13%,
+      rgba(48, 112, 235, 0.4),
+      transparent 49%
+    ),
+    linear-gradient(145deg, #10264a 0%, #0b1730 74%);
+  color: #ffffff;
+}
+
+.cav-login-intro::before,
+.cav-login-intro::after {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(172, 200, 255, 0.09);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.cav-login-intro::before {
+  top: -180px;
+  right: -200px;
+  width: 540px;
+  height: 540px;
+}
+
+.cav-login-intro::after {
+  right: -110px;
+  bottom: -300px;
+  width: 560px;
+  height: 560px;
+}
+
+/* Brand */
+
+.cav-login-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.cav-login-brand-mark,
+.cav-login-form-brand-mark {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.cav-login-brand-mark {
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.11);
+  color: #a5d4ff;
+}
+
+.cav-login-brand-mark svg,
+.cav-login-form-brand-mark svg {
+  width: 24px;
+  height: 24px;
+}
+
+.cav-login-brand-name {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.cav-login-brand-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 3px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.cav-login-brand-caption {
+  color: #b6c8e6;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* Headline */
+
+.cav-login-intro-content {
+  width: 100%;
+  max-width: 470px;
+}
+
+.cav-login-eyebrow,
+.cav-login-welcome,
+.cav-login-workflow-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.cav-login-eyebrow {
+  margin-bottom: 15px;
+  color: #91caff;
+}
+
+.cav-login-intro h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(32px, 3.3vw, 45px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+
+.cav-login-intro h1 span {
+  color: #92caff;
+}
+
+.cav-login-intro-content > p {
+  max-width: 405px;
+  margin: 18px 0 22px;
+  color: #c1d0e7;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* Lifecycle illustration */
+
+.cav-login-workflow {
+  padding: 18px;
+  border: 1px solid rgba(171, 204, 255, 0.17);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.065);
+}
+
+.cav-login-workflow-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cav-login-workflow-icon {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(150, 195, 255, 0.24);
+  border-radius: 11px;
+  background: rgba(56, 125, 232, 0.17);
+  color: #a5d4ff;
+}
+
+.cav-login-workflow-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.cav-login-workflow-label {
+  margin-bottom: 5px;
+  color: #8fb7ee;
+  font-size: 9px;
+}
+
+.cav-login-workflow-heading strong {
+  color: #f4f8ff;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.cav-login-stage-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 17px;
+}
+
+.cav-login-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #e1ecff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}
+
+.cav-login-stage-number {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(144, 191, 255, 0.3);
+  border-radius: 6px;
+  color: #9bc7ff;
+  font-size: 9px;
+}
+
+.cav-login-stage-arrow {
+  margin-left: 2px;
+  color: #77a1d4;
+  font-size: 12px;
+}
+
+.cav-login-workflow-note {
+  margin: 13px 0 0;
+  color: #9dafca;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.cav-login-intro-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: #a9bddc;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.065em;
+}
+
+.cav-login-footer-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #6d95ca;
+}
+
+/* Sign-in form */
+
+.cav-login-form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 48px;
+  background: #ffffff;
+}
+
+.cav-login-form-inner {
+  width: 100%;
+  max-width: 370px;
+}
+
+.cav-login-form-topline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cav-login-form-brand-mark {
+  background: #eaf1ff;
+  color: #2563eb;
+}
+
+.cav-login-form-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cav-login-form-brand-text strong {
+  color: #14213d;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.cav-login-form-brand-text span {
+  color: #71809a;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+}
+
+.cav-login-form-heading {
+  margin: 33px 0 27px;
+}
+
+.cav-login-welcome {
+  margin-bottom: 11px;
+  color: #2563eb;
+}
+
+.cav-login-form-heading h2 {
+  max-width: 330px;
+  margin: 0;
+  color: #15213a;
+  font-size: clamp(26px, 2.4vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+}
+
+.cav-login-form-heading p {
+  margin: 12px 0 0;
+  color: #748097;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cav-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cav-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cav-login-field label {
+  color: #293750;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cav-login-field input {
+  display: block;
+  width: 100%;
+  height: 49px;
+  margin: 0;
+  padding: 0 15px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #17253e;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.cav-login-field input::placeholder {
+  color: #9aa6b8;
+}
+
+.cav-login-field input:focus {
+  border-color: #3b73ee;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.cav-login-field input:disabled {
+  background: #f5f7fb;
+  cursor: not-allowed;
+}
+
+.cav-login-password-wrap {
+  position: relative;
+}
+
+.cav-login-password-wrap input {
+  padding-right: 77px;
+}
+
+.cav-login-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  height: 34px;
+  transform: translateY(-50%);
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #2563eb;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cav-login-password-toggle:hover {
+  background: #eef4ff;
+}
+
+.cav-login-password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.cav-login-password-toggle:focus-visible,
+.cav-login-submit:focus-visible {
+  outline: 3px solid #93b5ff;
+  outline-offset: 3px;
+}
+
+.cav-login-error {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fff1f2;
+  color: #b42335;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.cav-login-submit {
+  display: flex;
+  width: 100%;
+  height: 49px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 3px;
+  border: 0;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.cav-login-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #1d4ed8;
+}
+
+.cav-login-submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.cav-login-form-footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.cav-login-footer-line {
+  display: block;
+  width: 34px;
+  height: 2px;
+  margin: 0 auto 14px;
+  border-radius: 2px;
+  background: #dbe5f3;
+}
+
+.cav-login-form-footer p {
+  margin: 0;
+  color: #9aa5b7;
+  font-size: 11px;
+  letter-spacing: 0.035em;
+}
+
+/* Responsive layout */
+
+@media (max-width: 850px) {
+  .cav-login-page {
+    padding: 16px;
+  }
+
+  .cav-login-shell {
+    grid-template-columns: 1fr;
+    max-width: 540px;
+  }
+
+  .cav-login-intro {
+    gap: 18px;
+    padding: 27px;
+  }
+
+  .cav-login-intro h1 {
+    font-size: 34px;
+  }
+
+  .cav-login-intro-content > p {
+    margin: 12px 0 0;
+  }
+
+  .cav-login-workflow,
+  .cav-login-intro-footer {
+    display: none;
+  }
+
+  .cav-login-form-section {
+    padding: 32px 27px 38px;
+  }
+
+  .cav-login-form-heading {
+    margin: 27px 0;
+  }
+
+  .cav-login-form-footer {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .cav-login-page {
+    padding: 10px;
+  }
+
+  .cav-login-shell {
+    border-radius: 17px;
+  }
+
+  .cav-login-intro {
+    padding: 24px 21px;
+  }
+
+  .cav-login-brand-caption {
+    font-size: 8px;
+  }
+
+  .cav-login-intro h1 {
+    font-size: 29px;
+  }
+
+  .cav-login-form-section {
+    padding: 28px 21px 34px;
+  }
+
+  .cav-login-form-heading h2 {
+    font-size: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cav-login-page *,
+  .cav-login-page *::before,
+  .cav-login-page *::after {
+    transition: none !important;
+  }
+}
