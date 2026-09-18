@@ -1,0 +1,83 @@
+/* Shared authentication links */
+
+.cav-auth-switch {
+  margin: 22px 0 0;
+  color: #748097;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.cav-auth-switch a {
+  color: #2563eb;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.cav-auth-switch a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.cav-auth-switch a:focus-visible {
+  border-radius: 3px;
+  outline: 3px solid #93b5ff;
+  outline-offset: 3px;
+}
+
+/* Registration success feedback */
+
+.cav-auth-success {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  border: 1px solid #b7ebd1;
+  border-radius: 9px;
+  background: #effcf5;
+  color: #166534;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Registration form */
+
+.cav-register-form-section {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.cav-register-form-heading {
+  margin-top: 25px;
+  margin-bottom: 23px;
+}
+
+.cav-register-form {
+  gap: 14px;
+}
+
+.cav-register-note {
+  margin: 13px 0 0;
+  color: #748097;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.cav-register-auth-switch {
+  margin-top: 15px;
+}
+
+.cav-register-form-footer {
+  margin-top: 23px;
+}
+
+@media (max-width: 850px) {
+  .cav-register-form-section {
+    padding: 29px 27px 35px;
+  }
+}
+
+@media (max-width: 420px) {
+  .cav-register-form-section {
+    padding: 26px 21px 32px;
+  }
+}

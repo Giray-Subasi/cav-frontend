@@ -1,51 +1,64 @@
 import { useState } from 'react'
-import {
-  Link,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
-import { login } from '../services/api'
+import { Link, useNavigate } from 'react-router-dom'
+import { register } from '../services/api'
 import AuthIntro, { ChipIcon } from '../components/AuthIntro'
 import '../App.css'
 import './LoginPage.css'
 import './AuthPageExtras.css'
 
-function LoginPage() {
-  const location = useLocation()
+function RegisterPage() {
   const navigate = useNavigate()
 
-  const [username, setUsername] = useState(
-    location.state?.registrationSuccess
-      ? (location.state.registeredUsername ?? '')
-      : ''
-  )
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [registrationNotice, setRegistrationNotice] = useState(
-    Boolean(location.state?.registrationSuccess)
-  )
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
     setError('')
-    setRegistrationNotice(false)
+
+    const cleanUsername = username.trim()
+
+    if (!cleanUsername) {
+      setError('Please enter a username.')
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must contain at least 6 characters.')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.')
+      return
+    }
+
     setLoading(true)
 
     try {
-      const data = await login(username, password)
-
-      sessionStorage.setItem('token', data.token)
+      await register(cleanUsername, password)
 
       setPassword('')
-      navigate('/dashboard')
+      setConfirmPassword('')
+
+      navigate('/login', {
+        replace: true,
+        state: {
+          registrationSuccess: true,
+          registeredUsername: cleanUsername,
+        },
+      })
     } catch (error) {
       setError(
         error instanceof Error
           ? error.message
-          : 'Unable to sign in. Please try again.'
+          : 'Unable to create your account. Please try again.'
       )
     } finally {
       setLoading(false)
@@ -58,8 +71,8 @@ function LoginPage() {
         <AuthIntro />
 
         <section
-          className="cav-login-form-section"
-          aria-labelledby="cav-login-title"
+          className="cav-login-form-section cav-register-form-section"
+          aria-labelledby="cav-register-title"
         >
           <div className="cav-login-form-inner">
             <div className="cav-login-form-topline">
@@ -73,45 +86,39 @@ function LoginPage() {
               </div>
             </div>
 
-            <div className="cav-login-form-heading">
+            <div className="cav-login-form-heading cav-register-form-heading">
               <span className="cav-login-welcome">
-                WELCOME BACK
+                GET STARTED
               </span>
 
-              <h2 id="cav-login-title">
-                Sign in to your workspace
+              <h2 id="cav-register-title">
+                Create your account
               </h2>
 
               <p>
-                Enter your credentials to access the
-                eSIM management dashboard.
+                Join the workspace to view and track
+                eSIM profiles.
               </p>
             </div>
 
-            {registrationNotice && (
-              <p className="cav-auth-success" role="status">
-                Account created successfully. Sign in to continue.
-              </p>
-            )}
-
             <form
-              className="cav-login-form"
+              className="cav-login-form cav-register-form"
               onSubmit={handleSubmit}
             >
               <div className="cav-login-field">
-                <label htmlFor="username">
+                <label htmlFor="register-username">
                   Username
                 </label>
 
                 <input
-                  id="username"
+                  id="register-username"
                   name="username"
                   type="text"
                   value={username}
                   onChange={(event) =>
                     setUsername(event.target.value)
                   }
-                  placeholder="Enter your username"
+                  placeholder="Choose a username"
                   autoComplete="username"
                   autoCapitalize="none"
                   spellCheck={false}
@@ -121,21 +128,22 @@ function LoginPage() {
               </div>
 
               <div className="cav-login-field">
-                <label htmlFor="password">
+                <label htmlFor="register-password">
                   Password
                 </label>
 
                 <div className="cav-login-password-wrap">
                   <input
-                    id="password"
+                    id="register-password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(event) =>
                       setPassword(event.target.value)
                     }
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
+                    placeholder="At least 6 characters"
+                    autoComplete="new-password"
+                    minLength={6}
                     disabled={loading}
                     required
                   />
@@ -159,6 +167,48 @@ function LoginPage() {
                 </div>
               </div>
 
+              <div className="cav-login-field">
+                <label htmlFor="register-confirm-password">
+                  Confirm password
+                </label>
+
+                <div className="cav-login-password-wrap">
+                  <input
+                    id="register-confirm-password"
+                    name="confirmPassword"
+                    type={
+                      showConfirmPassword ? 'text' : 'password'
+                    }
+                    value={confirmPassword}
+                    onChange={(event) =>
+                      setConfirmPassword(event.target.value)
+                    }
+                    placeholder="Enter your password again"
+                    autoComplete="new-password"
+                    minLength={6}
+                    disabled={loading}
+                    required
+                  />
+
+                  <button
+                    className="cav-login-password-toggle"
+                    type="button"
+                    onClick={() =>
+                      setShowConfirmPassword((current) => !current)
+                    }
+                    aria-label={
+                      showConfirmPassword
+                        ? 'Hide password confirmation'
+                        : 'Show password confirmation'
+                    }
+                    aria-pressed={showConfirmPassword}
+                    disabled={loading}
+                  >
+                    {showConfirmPassword ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </div>
+
               {error && (
                 <p className="cav-login-error" role="alert">
                   {error}
@@ -171,7 +221,9 @@ function LoginPage() {
                 disabled={loading}
               >
                 <span>
-                  {loading ? 'Signing in...' : 'Sign in'}
+                  {loading
+                    ? 'Creating account...'
+                    : 'Create account'}
                 </span>
 
                 {!loading && (
@@ -180,14 +232,18 @@ function LoginPage() {
               </button>
             </form>
 
-            <p className="cav-auth-switch">
-              Don&apos;t have an account?{' '}
-              <Link to="/register">
-                Create an account
+            <p className="cav-register-note">
+              New accounts receive the USER role.
+            </p>
+
+            <p className="cav-auth-switch cav-register-auth-switch">
+              Already have an account?{' '}
+              <Link to="/login">
+                Sign in
               </Link>
             </p>
 
-            <div className="cav-login-form-footer">
+            <div className="cav-login-form-footer cav-register-form-footer">
               <span className="cav-login-footer-line" />
 
               <p>C.A.V · eSIM Management System</p>
@@ -199,4 +255,4 @@ function LoginPage() {
   )
 }
 
-export default LoginPage
+export default RegisterPage

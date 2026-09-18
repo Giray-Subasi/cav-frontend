@@ -61,6 +61,40 @@ export async function login(username, password) {
   return data
 }
 
+export async function register(username, password) {
+  const response = await fetch(
+    `${API_BASE_URL}/auth/register`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    }
+  )
+
+  const contentType = response.headers.get('content-type')
+  let data = null
+
+  if (contentType?.includes('application/json')) {
+    data = await response.json()
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data?.message ||
+        (response.status === 409
+          ? 'This username is already taken.'
+          : 'Registration failed. Please try again.')
+    )
+  }
+
+  return data
+}
+
 export function getProfiles({
   page = 0,
   size = 10,
